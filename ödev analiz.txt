@@ -1,0 +1,147 @@
+
+Analiz:
+
+1. Satırdaki URL USOM'da var mı kontrol edilir. 
+   USOM'da varsa ZARARLI olarak OUT.xlsx log dosyasına yaz. [gelen satır + ZARARLI]
+   Zararlı olmayan satır için 2. adıma git.
+
+2. SSL kontrolü yap. 
+   SSL yoksa SSL sütununa "YOK" yaz. 
+   SSL varsa SSL sütununa "VAR" yaz.
+
+3. COS SIMILARITY ORANI
+   Girilen URL ile zararsız URL listesindeki url'ler kıyaslanarak en yakın olanı bulunur ve oranı yazılır.
+
+4. ORG.DOM.KONTROL ile 
+   url şema aynı ise ZARARSIZ,
+   url şema aynı değil ise ZARARLI OLABİLİR,
+
+hsbc-onlines.com
+http://www.hsbc.com.tr
+http://basvuru.hsbc.com.tr
+
+
+
+
+Girilen bir adresle aşağıdaki URL formatlarıyla uyumlu 
+Domain adresinde 1 nokta varsa : https://hsbc.com
+Domain adresinde 2 nokta varsa : https://www.hsbc.com      
+Domain adresinde 3 nokta varsa : https://www.hsbc.com.tr 
+
+
+
+modül : 
+
+
+zararsız:
+
+http://www.akbank.com.tr
+https://www.alternatifbank.com.tr/
+http://www.anadolubank.com.tr
+http://www.arabturkbank.com/
+http://www.arabturkbank.com/
+http://www.mellatbank.com
+http://www.bankofchina.com.tr/
+http://www.burgan.com.tr
+http://www.citibank.com.tr
+http://www.denizbank.com
+http://www.deutschebank.com.tr
+http://www.fibabanka.com.tr/
+http://www.habibbank.com.tr
+http://www.hsbc.com.tr
+http://www.tekstilbank.com.tr
+http://www.ingbank.com.tr
+http://www.intesasanpaolo.com
+http://www.jpmorganchase.com/pages/jpmorgan/international/turkey
+http://www.tu.bk.mufg.jp/index-tr.html
+http://www.odeabank.com.tr
+http://www.qnbfinansbank.com.tr
+http://www.rabobank.com.tr/
+http://www.societegenerale.com.tr
+http://www.sekerbank.com.tr
+http://www.ziraat.com.tr/
+http://www.turkishbank.com
+http://www.turklandbank.com
+http://www.teb.com.tr
+https://www.garantibbva.com.tr
+http://www.halkbank.com.tr/
+http://www.isbank.com.tr
+http://www.vakifbank.com.tr
+http://www.ykb.com.tr
+
+http://www.aktifbank.com.tr/
+http://www.ml.com.tr
+http://www.bankpozitif.com.tr/
+https://www.dybank.com.tr
+https://www.destekbank.com
+http://www.dilerbank.com.tr/
+https://goldenglobalbank.com.tr
+http://www.gsdbank.com.tr
+http://www.ilbank.gov.tr
+http://www.takasbank.com.tr
+http://www.nurolbank.com.tr
+https://www.pashabank.com.tr/
+http://www.standardchartered.com.tr
+http://www.eximbank.gov.tr
+http://www.kalkinma.com.tr
+http://www.tskb.com.tr
+
+http://www.albarakaturk.com.tr/
+http://www.kuveytturk.com.tr
+http://www.emlakbank.com.tr/
+http://www.turkiyefinans.com.tr
+http://www.vakifkatilim.com.tr/
+http://www.ziraatkatilim.com.tr/
+http://www.adabank.com.tr/
+http://www.fonbank.com.tr
+https://www.turkticaretbankasi.com.tr/
+
+
+
+zararlı:
+
+
+https://www.xyzinstagram.com/
+
+
+aşağıdaki kodu gelen url bilgisinde netloc aynı ise scheme'yi dikkate almadan kıyaslayacak şekilde  düzenleyebilir misin?
+
+from urllib.parse import urlparse
+
+def domain_kontrol(url, url_listesi):
+    parsed_url = urlparse(url)
+    girilen_domain = parsed_url.netloc
+    
+    for listedeki_url in url_listesi:
+        parsed_listedeki_url = urlparse(listedeki_url)
+        listedeki_domain = parsed_listedeki_url.netloc
+        
+        if girilen_domain == listedeki_domain:
+            return True
+    
+    return False
+
+# Geçerli URL listesi
+gecerli_url_listesi = [
+    "http://www.akbank.com.tr",
+    "https://www.alternatifbank.com.tr/",
+    "http://www.anadolubank.com.tr",
+    "http://www.arabturkbank.com/",
+]
+
+while True:
+    girilen_url = input("Lütfen bir URL girin (Çıkmak için 'q' tuşuna basın): ")
+
+    if girilen_url.lower() == 'q':
+        break
+
+    sonuc = domain_kontrol(girilen_url, gecerli_url_listesi)
+
+    if sonuc:
+        print("Girilen URL listedeki bir domain ile eşleşiyor.")
+    else:
+        print("Girilen URL listedeki hiçbir domain ile eşleşmiyor.")
+
+
+
+

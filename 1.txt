@@ -1,0 +1,103 @@
+from cosine_similarity import calculate_cosine_similarity
+from USOM import USOM
+from sslx import ssl_kontrol
+from DOMCTRL import domctrl
+import pandas as pd
+from Levenshtein import levenshtein
+from Selahattin3 import *
+
+global toplam
+
+fto = float(96.7)  # FREKANS TOPLAM ORANI )%( = 99,59
+
+baslik = ['URL',
+          'USOM(VAR/YOK)',
+          'SSL(VAR/YOK)',
+          'COS SIMILARITY ORANI(%-0 İLE 1 ARASINDA)',
+          'LONGEST COMMON SEQUENCE ORANI(%-0 İLE 1 ARASINDA)',
+          'LEVENSHTEIN ORANI(%-0 İLE 1 ARASINDA)',
+          'ORG. DOMAIN KONTROLÜ(VAR/YOK)',
+          'Toplam_nokta_sayisi',
+          'Toplam_yatik_cizgi_sayisi',
+          'Toplam_cift_yatik_cizgi_sayisi',
+          'Toplam_alt_cizgi_sayisi',
+          'Toplam_tire_sayisi',
+          'Toplam_esittir_sayisi',
+          'Toplam_kucuktur_sayisi',
+          'Toplam_buyuktur_sayisi()',
+          'Toplam_tilde_sayisi()',
+          'Toplam_yildiz_sayisi()',
+          'Toplam_arti_sayisi()',
+          'Toplam_url_uzunlugu_sayisi()',
+          'Toplam_com_sayisi()',
+          'Toplam_nokta_com_sayisi()',
+          'Toplam_unlem_sayisi()',
+          'Toplam_sesli_harflerin_sayisi()',
+          'Toplam_kalin_sesli_harflerin_sayisi()',
+          'Toplam_ince_sesli_harflerin_sayisi()',
+          'Toplam_sessiz_unsuz_sesli_harflerin_sayisi()',
+          'Toplam_sert_unsuz_sesli_harflerin_sayisi()',
+          'Toplam_yumusak_unsuz_sesli_harflerin_sayisi()',
+          'Toplam_urlde_gecen_harflerin_sayisi()',
+          'Toplam_urlde_gecen_harflerin_sayisi_ingilizce()',
+          'Toplam_urlde_gecen_harflerin_sayisi_ingilizce_bolu_fto()',
+          'SONUÇ(GERÇEK/SAHTE)'
+          ]
+
+while True:
+    secim = input("URL Manuel/Otomatik(dosyadan) kontrol? (M/O): ")
+
+    if secim == 'M' or 'm':
+        url = input("url  : ")
+        usom_sonuc = USOM(url)
+        ssl_sonuc = ssl_kontrol(url)
+        cos_similarity_sonuc = calculate_cosine_similarity(url)
+        levenshtein_sonuc = levenshtein(url)
+        domctrl_sonuc = domctrl(url)
+        toplam_nokta_sayisi_sonuc = toplam_nokta_sayisi(url)
+        toplam_yatik_cizgi_sayisi_sonuc = toplam_yatik_cizgi_sayisi(url)
+        toplam_cift_yatik_cizgi_sayisi_sonuc = toplam_cift_yatik_cizgi_sayisi(url)
+        toplam_alt_cizgi_sayisi_sonuc = toplam_alt_cizgi_sayisi(url)
+        toplam_tire_sayisi_sonuc = toplam_tire_sayisi(url)
+        toplam_esittir_sayisi_sonuc = toplam_esittir_sayisi(url)
+        toplam_kucuktur_sayisi_sonuc = toplam_kucuktur_sayisi(url)
+        toplam_buyuktur_sayisi_sonuc = toplam_buyuktur_sayisi(url)
+        toplam_tilde_sayisi_sonuc = toplam_tilde_sayisi(url)
+        toplam_yildiz_sayisi_sonuc = toplam_yildiz_sayisi(url)
+        toplam_arti_sayisi_sonuc = toplam_arti_sayisi(url)
+
+        print("USOM : ", usom_sonuc)
+        print("SSL  : ", ssl_sonuc)
+        print("COSINE SIMILARITY : ", cos_similarity_sonuc)
+        print("Levenshtein distance: ", levenshtein_sonuc)
+        print("DOMAIN KONTROLÜ : ", domctrl_sonuc)
+        print("toplam_nokta_sayisi : ", toplam_nokta_sayisi_sonuc)
+        print("toplam_yatik_cizgi_sayisi : ", toplam_yatik_cizgi_sayisi_sonuc)
+        print("toplam_cift_yatik_cizgi_sayisi : ", toplam_cift_yatik_cizgi_sayisi_sonuc)
+        print("toplam_alt_cizgi_sayisi : ", toplam_alt_cizgi_sayisi_sonuc)
+        print("toplam_tire_sayisi : ", toplam_tire_sayisi_sonuc)
+        print("toplam_esittir_sayisi : ", toplam_esittir_sayisi_sonuc)
+        print("toplam_kucuktur_sayisi : ", toplam_kucuktur_sayisi_sonuc)
+        print("toplam_buyuktur_sayisi : ", toplam_buyuktur_sayisi_sonuc)
+        print("toplam_tilde_sayisi : ", toplam_tilde_sayisi_sonuc)
+        print("toplam_yildiz_sayisi : ", toplam_yildiz_sayisi_sonuc)
+        print("toplam_arti_sayisi : ", toplam_arti_sayisi_sonuc)
+
+    elif secim == 'O' or 'o':
+        excel_dosya = ("D:\\Masaüstü\\PYTHON SCR\\Selahattin\\ÖDEV\\IN.xlsx")
+        sheet = ("Sayfa1")
+        df = pd.read_excel(excel_dosya, sheet_name=sheet)
+        urls = df['URL'].tolist()
+        for url in urls:
+            usom_sonuc = USOM(url)
+            ssl_sonuc = ssl_kontrol(url)
+            cos_similarity_sonuc = calculate_cosine_similarity(url)
+            domctrl_sonuc = domctrl(url)
+            print("URL  : ", url)
+            print("USOM : ", usom_sonuc)
+            print("SSL  : ", ssl_sonuc)
+            print("COSINE SIMILARITY : ", cos_similarity_sonuc)
+            print("DOMAIN KONTROLÜ : ", domctrl_sonuc)
+            print('*' * 70)
+    else:
+        print("Geçersiz seçim! 'M' veya 'O' giriniz.")
